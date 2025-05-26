@@ -27,13 +27,13 @@ class MedicoDAO{
     }
     
     public function autenticar(){
-        return "SELECT idMedico
+        return "select idMedico
                 from Medico
-                where correo = '" . $this -> correo . "' and '" . md5($this -> clave) . "'";
+                where correo = '" . $this -> correo . "' and clave = '" . md5($this -> clave) . "'";
     }
     
     public function consultar(){
-        return "SELECT m.nombre, m.apellido, m.correo, m.foto, e.idEspecialidad, e.nombre  
+        return "select m.nombre, m.apellido, m.correo, m.foto, e.idEspecialidad, e.nombre  
                 from Medico m join Especialidad e on m.Especialidad_id = e.idEspecialidad
                 where idMedico = '" . $this -> id . "'";
     }

@@ -16,6 +16,7 @@ class Medico extends Persona {
     public function getEspecialidad(){
         return $this -> especialidad;
     }
+
     public function consultarPorEspecialidad(){
         $conexion = new Conexion();
         $medicoDAO = new MedicoDAO();
@@ -42,7 +43,7 @@ class Medico extends Persona {
         $conexion = new Conexion();
         $medicoDAO = new MedicoDAO("","","", $this -> correo, $this -> clave);
         $conexion -> abrir();
-        $conexion -> ejecutar($medicoDAO ->autenticar());
+        $conexion -> ejecutar($medicoDAO -> autenticar());
         if($conexion -> filas() == 1){
             $this -> id = $conexion -> registro()[0];
             $conexion->cerrar();
