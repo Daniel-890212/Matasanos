@@ -50,7 +50,7 @@ if(isset($_POST["autenticar"])){
 							</div>
 							<div class="mb-3">
 								<input type="password" class="form-control" name="clave" placeholder="Clave">
-							</div>							 	
+							</div>							
 							<button type="submit" class="btn btn-primary" name="autenticar">Autenticar</button>
 						</form>
     					<?php 

@@ -1,39 +1,60 @@
 <?php
+require_once("persistencia/Conexion.php");
 require_once("logica/Persona.php");
 require_once("persistencia/PacienteDAO.php");
 
-class Paciente extends Persona {
+class Paciente extends Persona
+{
     private $fechaNacimiento;
 
-    public function __construct($id = "", $nombre = "", $apellido = "", $correo = "", $clave = "", $fechaNacimiento = ""){
+    public function __construct($id = "", $nombre = "", $apellido = "", $correo = "", $clave = "", $fechaNacimiento = "")
+    {
         parent::__construct($id, $nombre, $apellido, $correo, $clave);
-        $this -> fechaNacimiento = $fechaNacimiento;
+        $this->fechaNacimiento = $fechaNacimiento;
     }
-    
-    public function autenticar(){
+
+    public function autenticar()
+    {
         $conexion = new Conexion();
-        $pacienteDAO = new PacienteDAO("","","", $this -> correo, $this -> clave);
-        $conexion -> abrir();
-        $conexion -> ejecutar($pacienteDAO -> autenticar());
-        if($conexion -> filas() == 1){
-            $this -> id = $conexion -> registro()[0];
+        $pacienteDAO = new PacienteDAO("", "", "", $this->correo, $this->clave);
+        $conexion->abrir();
+        $conexion->ejecutar($pacienteDAO->autenticar());
+        if ($conexion->filas() == 1) {
+            $this->id = $conexion->registro()[0];
             $conexion->cerrar();
             return true;
-        }else{
+        } else {
             $conexion->cerrar();
             return false;
         }
     }
-    
-    public function consultar(){
+
+    public function consultar()
+    {
         $conexion = new Conexion();
-        $pacienteDAO = new PacienteDAO($this -> id);
-        $conexion -> abrir();
-        $conexion -> ejecutar($pacienteDAO -> consultar());
-        $datos = $conexion -> registro();
-        $this -> nombre = $datos[0];
-        $this -> apellido = $datos[1];
-        $this -> correo = $datos[2];
+        $pacienteDAO = new PacienteDAO($this->id);
+        $conexion->abrir();
+        $conexion->ejecutar($pacienteDAO->consultar());
+        $datos = $conexion->registro();
+        $this->nombre = $datos[0];
+        $this->apellido = $datos[1];
+        $this->correo = $datos[2];
         $conexion->cerrar();
     }
+
+    public function buscar($filtro)
+    {
+        $conexion = new Conexion();
+        $pacienteDAO = new PacienteDAO();
+        $conexion->abrir();
+        $conexion->ejecutar($pacienteDAO->buscarMultitud($filtro));
+        $pacientes = array();
+        while (($datos = $conexion->registro()) != null) {
+            $paciente = new Paciente($datos[0], $datos[1], $datos[2], $datos[3]);
+            array_push($pacientes, $paciente);
+        }
+        $conexion->cerrar();
+        return $pacientes;
+    }
+
 }

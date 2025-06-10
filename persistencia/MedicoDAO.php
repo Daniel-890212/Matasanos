@@ -34,7 +34,7 @@ class MedicoDAO{
     
     public function consultar(){
         return "select m.nombre, m.apellido, m.correo, m.foto, e.idEspecialidad, e.nombre  
-                from Medico m join Especialidad e on m.Especialidad_id = e.idEspecialidad
+                from Medico m join Especialidad e on m.Especialidad_idEspecialidad = e.idEspecialidad
                 where idMedico = '" . $this -> id . "'";
     }
 }
